@@ -36,10 +36,14 @@ static int ymsg_release(struct inode * inode, struct file * file)
 static ssize_t ymsg_read(struct file *file, char __user *buf,
 			 size_t count, loff_t *ppos)
 {
-	if ((file->f_flags & O_NONBLOCK) &&
-	    !do_syslog(SYSLOG_ACTION_SIZE_UNREAD, NULL, 0, SYSLOG_FROM_PROC))
-		return -EAGAIN;
-	return do_syslog(SYSLOG_ACTION_READ, buf, count, SYSLOG_FROM_PROC);
+	int val = 0;        
+
+	/*将字符串转换成数字*/        
+	val = simple_strtol(page, NULL, 10);
+
+    printk(KERN_ALERT"ymsg_read: %d[%s].\n", val, page);
+
+    return snprintf(buf, PAGE_SIZE, "%d\n", val);
 }
 
 /*把缓冲区的值buff保存到设备寄存器val中去*/
