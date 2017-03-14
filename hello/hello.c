@@ -208,7 +208,8 @@ static const struct file_operations bat_proc_fops = {
 };
 
 static void hello_create_proc(void) {
-    proc_create(HELLO_DEVICE_PROC_NAME, 0, NULL, &bat_proc_fops);
+    proc_create(HELLO_DEVICE_PROC_NAME, 0644, NULL, &bat_proc_fops);
+    //proc_create("batdrv_log", 0644, NULL, &bat_proc_fops);
 }
 
 /*É¾³ý/proc/helloÎÄ¼þ*/
