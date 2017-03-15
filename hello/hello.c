@@ -160,22 +160,24 @@ static ssize_t hello_val_store(struct device* dev, struct device_attribute* attr
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*读取设备寄存器val的值，保存在page缓冲区中*/
-static ssize_t hello_proc_read(char* page, char** start, off_t off, int count, int* eof, void* data) {
-	if(off > 0) {
-		*eof = 1;
-		return 0;
-	}
+//ssize_t (*read) (struct file *, char __user *, size_t, loff_t *);
+static ssize_t hello_proc_read(struct file * filp, char __user * buff, size_t len, loff_t * data) {
 
-	return __hello_get_val(hello_dev, page);
+    printk(KERN_ALERT"hello_proc_read : %d.\n", len);
+
+	return __hello_get_val(hello_dev, buff);
 }
 
 /*把缓冲区的值buff保存到设备寄存器val中去*/
-static ssize_t hello_proc_write(struct file* filp, const char __user *buff, unsigned long len, void* data) {
+//ssize_t (*write) (struct file *, const char __user *, size_t, loff_t *);
+static ssize_t hello_proc_write(struct file* filp, const char __user *buff, size_t len, loff_t* data) {
 	int err = 0;
 	char* page = NULL;
 
+    printk(KERN_ALERT"hello_proc_write : %d.\n", len);
+
 	if(len > PAGE_SIZE) {
-		printk(KERN_ALERT"The buff is too large: %lu.\n", len);
+		printk(KERN_ALERT"The buff is too large: %d.\n", len);
 		return -EFAULT;
 	}
 
