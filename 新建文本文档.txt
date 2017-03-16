@@ -1,3 +1,5 @@
 chmod 0666 /dev/hello  
 
 adb logcat SystemServer:I *:S
+adb logcat HelloService:I *:S
+adb logcat SystemServer:I HelloService:I *:S
