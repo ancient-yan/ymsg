@@ -347,17 +347,7 @@ public final class SystemServer {
         LocalServices.addService(SystemServiceManager.class, mSystemServiceManager);
 
 		
-		try {
-		
-						 Slog.i(TAG, "Hello Service");
-		
-						 ServiceManager.addService("hello", new HelloService());
-		
-				   } catch (Throwable e) {
-		
-						 Slog.e(TAG, "Failure starting Hello Service", e);
-		
-				   }
+
 				   
 
         // Start services.
@@ -1251,6 +1241,25 @@ public final class SystemServer {
                     Slog.e(TAG, "Failure starting MtkHdmiManager", e);
                 }
             }
+
+			{
+				Slog.e(TAG, "starting Hello Service");
+				
+					try {
+		
+						 Slog.e(TAG, "Hello Service");
+		
+						 ServiceManager.addService("hello", new HelloService());
+		
+				   } catch (Throwable e) {
+		
+						 Slog.e(TAG, "Failure starting Hello Service", e);
+		
+				   }
+
+				   Slog.e(TAG, "Hello Service  ---end");
+			}
+				   
             /// @}
 
             /// M: add for running booster feature @{
