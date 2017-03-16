@@ -19,9 +19,9 @@ namespace android
 	/*通过硬件抽象层定义的硬件访问接口设置硬件寄存器val的值*/
         static void hello_setVal(JNIEnv* env, jobject clazz, jint value) {
 		int val = value;
-		LOGI("Hello JNI: set value %d to device.", val);
+		ALOGI("Hello JNI: set value %d to device.", val);
 		if(!hello_device) {
-			LOGI("Hello JNI: device is not open.");
+			ALOGI("Hello JNI: device is not open.");
 			return;
 		}
 		
@@ -31,12 +31,12 @@ namespace android
 	static jint hello_getVal(JNIEnv* env, jobject clazz) {
 		int val = 0;
 		if(!hello_device) {
-			LOGI("Hello JNI: device is not open.");
+			ALOGI("Hello JNI: device is not open.");
 			return val;
 		}
 		hello_device->get_val(hello_device, &val);
 		
-		LOGI("Hello JNI: get value %d from device.", val);
+		ALOGI("Hello JNI: get value %d from device.", val);
 	
 		return val;
 	}
@@ -48,17 +48,17 @@ namespace android
 	static jboolean hello_init(JNIEnv* env, jclass clazz) {
 		hello_module_t* module;
 		
-		LOGI("Hello JNI: initializing......");
+		ALOGI("Hello JNI: initializing......");
 		if(hw_get_module(HELLO_HARDWARE_MODULE_ID, (const struct hw_module_t**)&module) == 0) {
-			LOGI("Hello JNI: hello Stub found.");
+			ALOGI("Hello JNI: hello Stub found.");
 			if(hello_device_open(&(module->common), &hello_device) == 0) {
-				LOGI("Hello JNI: hello device is open.");
+				ALOGI("Hello JNI: hello device is open.");
 				return 0;
 			}
-			LOGE("Hello JNI: failed to open hello device.");
+			ALOGE("Hello JNI: failed to open hello device.");
 			return -1;
 		}
-		LOGE("Hello JNI: failed to get hello stub module.");
+		ALOGE("Hello JNI: failed to get hello stub module.");
 		return -1;		
 	}
         /*JNI方法表*/
