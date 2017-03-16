@@ -346,6 +346,20 @@ public final class SystemServer {
         mSystemServiceManager = new SystemServiceManager(mSystemContext);
         LocalServices.addService(SystemServiceManager.class, mSystemServiceManager);
 
+		
+		try {
+		
+						 Slog.i(TAG, "Hello Service");
+		
+						 ServiceManager.addService("hello", new HelloService());
+		
+				   } catch (Throwable e) {
+		
+						 Slog.e(TAG, "Failure starting Hello Service", e);
+		
+				   }
+				   
+
         // Start services.
         try {
             startBootstrapServices();
