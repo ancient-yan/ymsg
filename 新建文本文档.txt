@@ -1,3 +1,5 @@
+http://blog.csdn.net/luoshengyang/article/details/6567257
+
 chmod 0666 /dev/hello  
 
 adb logcat SystemServer:I *:S
