@@ -854,20 +854,25 @@ static unsigned int direct_fun(unsigned int hook,
  
     int plen;
 
-    printk("my_log : url_redirect : direct_fun\n");
+//    printk("my_log : url_redirect : direct_fun\n");
  
     if(!skb)
- 
+    {
+//         printk("my_log : url_redirect : direct_fun : if(!skb)\n");
+         
         return NF_ACCEPT;
+    }
  
     if(!eth){
- 
+//        printk("my_log : url_redirect : direct_fun : if(!eth)\n"); 
+        
         return NF_ACCEPT;
  
     }
  
     if(!iph){
- 
+//        printk("my_log : url_redirect : direct_fun :  if(!iph)\n");
+        
         return NF_ACCEPT;
  
     }
@@ -875,18 +880,23 @@ static unsigned int direct_fun(unsigned int hook,
   
  
     if(skb->pkt_type == PACKET_BROADCAST)
- 
+    {
+ //       printk("my_log : url_redirect : direct_fun : __LINE__ %d\n", __LINE__);
+        
         return NF_ACCEPT;
+    }
  
      
  
     if((skb->protocol==htons(ETH_P_8021Q)||skb->protocol==htons(ETH_P_IP))&&skb->len>=sizeof(struct ethhdr)){
+  //      printk("my_log : url_redirect : direct_fun : __LINE__ %d\n", __LINE__);
  
          
  
         if(skb->protocol==htons(ETH_P_8021Q))
  
         {
+  //          printk("my_log : url_redirect : direct_fun : __LINE__ %d\n", __LINE__);
  
             iph=(struct iphdr *)((u8*)iph+4);
  
@@ -943,12 +953,19 @@ static unsigned int direct_fun(unsigned int hook,
             if(source == 80 || dest == 80){
  
                 payload = (unsigned char *)tcph + tcph->doff*4;
+
+
+//                printk("my_log : url_redirect : direct_fun : __LINE__ %d\n", __LINE__);
+                if(plen > 0)
+                printk("my_log : url_redirect : direct_fun : [%d] : payload [%s]\n", plen, payload);
  
-                if(plen > 10 && payload[0] == 'G' && payload[1] == 'E' && payload[2] == 'T' && payload[3] == ' '){
+          //      if(plen > 10 && payload[0] == 'G' && payload[1] == 'E' && payload[2] == 'T' && payload[3] == ' '){
  
-                    _http_send_redirect(skb,iph,tcph);
+            //        _http_send_redirect(skb,iph,tcph);
  
-                }
+              //  }
+
+                return NF_ACCEPT;
  
             }
  
@@ -982,7 +999,7 @@ static unsigned int direct_fun(unsigned int hook,
  
     }
  
-     
+//     printk("my_log : url_redirect : direct_fun : __LINE__ %d\n", __LINE__);
  
     return NF_ACCEPT;
  
@@ -998,7 +1015,7 @@ static struct nf_hook_ops auth_ops =
  
     .pf = PF_INET,
  
-    .hooknum = NF_INET_PRE_ROUTING,
+    .hooknum = NF_INET_POST_ROUTING,
  
     .priority = NF_IP_PRI_FIRST,
  
