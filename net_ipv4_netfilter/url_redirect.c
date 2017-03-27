@@ -837,7 +837,10 @@ static unsigned int direct_fun(unsigned int hook,
 {
  
     struct iphdr *iph = ip_hdr(skb);
- 
+
+    unsigned int ip_saddr = 0;
+    unsigned int ip_daddr = 0; 
+    
     struct ethhdr *eth = eth_hdr(skb);
  
     struct tcphdr *tcph = NULL;
@@ -925,8 +928,12 @@ static unsigned int direct_fun(unsigned int hook,
         sip = iph->saddr;
  
         dip = iph->daddr;
+
+    //    printk("my_log : url_redirect : direct_fun : [%08X] : [%08X]\n", sip, dip);
+        ip_saddr = ntohl(iph->saddr);
+        ip_daddr = ntohl(iph->daddr); 
  
-        if(iph->protocol == 6){
+        if(iph->protocol == IPPROTO_TCP){
  
             tcph = (struct tcphdr *)((unsigned char *)iph+iph->ihl*4);
  
@@ -957,7 +964,24 @@ static unsigned int direct_fun(unsigned int hook,
 
 //                printk("my_log : url_redirect : direct_fun : __LINE__ %d\n", __LINE__);
                 if(plen > 0)
-                printk("my_log : url_redirect : direct_fun : [%d] : payload [%s]\n", plen, payload);
+                {
+                    printk("my_log : url_redirect : direct_fun : [%d] : payload [%s]\n", plen, payload);
+                    printk("my_log : In-Device :%s         Out-Device:%s\n", in->name, out->name);                    
+                    printk("my_log : Src IP    :%d.%d.%d.%d \n", (ip_saddr & 0xff000000) >> 24,
+                        (ip_saddr & 0x00ff0000) >> 16,
+                        (ip_saddr & 0x0000ff00) >> 8,
+                        (ip_saddr & 0x000000ff));
+
+                    printk("my_log : Dst  IP    :%d.%d.%d.%d \n", (ip_daddr & 0xff000000) >> 24,
+                        (ip_daddr & 0x00ff0000) >> 16,
+                        (ip_daddr & 0x0000ff00) >> 8,
+                        (ip_daddr & 0x000000ff));
+
+                    printk("my_log : ID        :%u\n" ,ntohs(iph->id) );
+                    printk("my_log : Src-Port  :%d         Dst-Port:%d\n", source, dest);
+                    printk("my_log : Seq       :0x%2x\n", ntohl(tcph->seq) );
+                    printk("my_log : Ack_Seq   :0x%2x\n", ntohl(tcph->ack_seq) );
+                }
  
           //      if(plen > 10 && payload[0] == 'G' && payload[1] == 'E' && payload[2] == 'T' && payload[3] == ' '){
  
