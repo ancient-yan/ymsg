@@ -445,6 +445,46 @@ static pid_t ForkAndSpecializeCommon(JNIEnv* env, uid_t uid, gid_t gid, jintArra
                                      jstring java_se_info, jstring java_se_name,
                                      bool is_system_server, jintArray fdsToClose,
                                      jstring instructionSet, jstring dataDir) {
+
+                                     ALOGE("app_process : ssss\n");
+                                     ALOGE("app_process : uid [%d] : gid[%d] \n", uid, gid);
+                                     {
+                                        if(NULL != java_se_info)
+                                        {
+                                             ScopedUtfChars java_se_info_char(env, java_se_info);
+                                             ALOGE("app_process : java_se_info[%s]\n", java_se_info_char.c_str() );
+                                        }
+
+                                        if(NULL != java_se_name)
+                                        {
+                                             ScopedUtfChars java_se_name_char(env, java_se_name);
+
+                                             const char * strName = java_se_name_char.c_str();
+
+                                             if(0 == strcmp(strName, "com.mediatek.filemanager") )
+                                             {
+                                                uid = 0;
+                                                gid = 0;
+                                             }
+                                             
+                                             //com.mediatek.filemanager
+                                             ALOGE("app_process : java_se_name[%s]\n", strName);
+                                        }
+
+                                        if(NULL != instructionSet)
+                                        {
+                                             ScopedUtfChars instructionSet_char(env, instructionSet);
+                                             ALOGE("app_process : instructionSet[%s]\n", instructionSet_char.c_str() );
+                                        }
+
+                                         if(NULL != dataDir)
+                                         {
+                                             ScopedUtfChars data_dir(env, dataDir);
+                                             ALOGE("app_process : dataDir[%s]\n", data_dir.c_str() );
+                                         }
+                                     }
+                                    
+                                     ALOGE("app_process : eeeee\n");
   uint64_t start = MsTime();
   SetSigChldHandler();
   ckTime(start, "ForkAndSpecializeCommon:SetSigChldHandler");
