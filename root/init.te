@@ -117,3 +117,13 @@ allow init kernel:process setsched;
 neverallow { domain -kernel} init:process dyntransition;
 neverallow domain init:process transition;
 neverallow init { file_type fs_type }:file entrypoint;
+
+# Manage /data/data subdirectories, including initially labeling them
+# upon creation via setfilecon or running restorecon_recursive,
+# setting owner/mode, creating symlinks within them, and deleting them
+# upon package uninstall.
+# Types extracted from seapp_contexts type= fields.
+allow init { system_app_data_file bluetooth_data_file nfc_data_file radio_data_file shell_data_file app_data_file }:dir { create_dir_perms relabelfrom relabelto };
+allow init { system_app_data_file bluetooth_data_file nfc_data_file radio_data_file shell_data_file app_data_file }:lnk_file { create setattr getattr unlink rename relabelfrom relabelto };
+allow init { system_app_data_file bluetooth_data_file nfc_data_file radio_data_file shell_data_file app_data_file }:{ file sock_file fifo_file } { getattr unlink rename relabelfrom relabelto setattr };
+
