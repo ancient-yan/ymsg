@@ -61,8 +61,8 @@ neverallow isSystemServer=false domain=system_server
 neverallow isSystemServer="" domain=system_server
 
 # system domains should never be assigned outside of system uid
-neverallow user=((?!system).)* domain=system_app
-neverallow user=((?!system).)* type=system_app_data_file
+# neverallow user=((?!system).)* domain=system_app
+# neverallow user=((?!system).)* type=system_app_data_file
 
 # anything with a non-known uid with a specified name should have a specified seinfo
 neverallow user=_app name=.* seinfo=""
@@ -86,6 +86,7 @@ neverallow user=shell domain=((?!shell).)*
 neverallow isAutoPlayApp=true domain=((?!autoplay_app).)*
 
 isSystemServer=true domain=system_server
+user=root seinfo=platform domain=system_app type=system_app_data_file
 user=system seinfo=platform domain=system_app type=system_app_data_file
 user=bluetooth seinfo=platform domain=bluetooth type=bluetooth_data_file
 user=nfc seinfo=platform domain=nfc type=nfc_data_file
