@@ -343,8 +343,8 @@ neverallow appdomain { domain -appdomain }:process
 # Transition to a non-app domain.
 # Exception for the shell domain and the su domain, can transition to runas,
 # etc.
-neverallow { appdomain -shell userdebug_or_eng(`-su') } { domain -appdomain }:process
-    { transition dyntransition };
+# neverallow { appdomain -shell userdebug_or_eng(`-su') } { domain -appdomain }:process
+#    { transition dyntransition };
 
 # Write to rootfs.
 neverallow appdomain rootfs:dir_file_class_set
