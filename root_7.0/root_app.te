@@ -1,0 +1,76 @@
+#
+# Apps that run with the system UID, e.g. com.android.system.ui,
+# com.android.settings.  These are not as privileged as the system
+# server.
+#
+type root_app, domain, domain_deprecated;
+app_domain(root_app)
+net_domain(root_app)
+binder_service(root_app)
+
+# Read and write /data/data subdirectory.
+allow root_app system_app_data_file:dir create_dir_perms;
+allow root_app system_app_data_file:{ file lnk_file } create_file_perms;
+
+# Read and write to /data/misc/user.
+allow root_app misc_user_data_file:dir create_dir_perms;
+allow root_app misc_user_data_file:file create_file_perms;
+
+# Access to vold-mounted storage for measuring free space
+allow root_app mnt_media_rw_file:dir search;
+
+# Read wallpaper file.
+allow root_app wallpaper_file:file r_file_perms;
+
+# Read icon file.
+allow root_app icon_file:file r_file_perms;
+
+# Write to properties
+set_prop(root_app, debug_prop)
+set_prop(root_app, system_prop)
+set_prop(root_app, logd_prop)
+set_prop(root_app, net_radio_prop)
+set_prop(root_app, system_radio_prop)
+set_prop(root_app, log_tag_prop)
+auditallow root_app net_radio_prop:property_service set;
+auditallow root_app system_radio_prop:property_service set;
+
+# ctl interface
+#set_prop(root_app, ctl_default_prop)
+set_prop(root_app, ctl_bugreport_prop)
+
+# Create /data/anr/traces.txt.
+allow root_app anr_data_file:dir ra_dir_perms;
+allow root_app anr_data_file:file create_file_perms;
+
+# Settings need to access app name and icon from asec
+allow root_app asec_apk_file:file r_file_perms;
+
+allow root_app servicemanager:service_manager list;
+allow root_app { service_manager_type -netd_service }:service_manager find;
+
+allow root_app keystore:keystore_key {
+	get_state
+	get
+	insert
+	delete
+	exist
+	list
+	reset
+	password
+	lock
+	unlock
+	is_empty
+	sign
+	verify
+	grant
+	duplicate
+	clear_uid
+	user_changed
+};
+
+# /sys access
+allow root_app sysfs_zram:dir search;
+allow root_app sysfs_zram:file r_file_perms;
+
+control_logd(root_app)
