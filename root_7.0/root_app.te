@@ -76,5 +76,5 @@ allow root_app sysfs_zram:file r_file_perms;
 control_logd(root_app)
 
 # Manage files on /cache and /cache/recovery
-allow root_app { cache_file cache_recovery_file }:dir create_dir_perms;
-allow root_app { cache_file cache_recovery_file }:file create_file_perms;
+allow root_app { cache_recovery_file cache_private_backup_file }:dir create_dir_perms;
+allow root_app { cache_recovery_file cache_private_backup_file }:file create_file_perms;
