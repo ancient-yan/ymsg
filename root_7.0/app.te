@@ -274,7 +274,7 @@ allow appdomain cache_file:dir getattr;
 
 # Superuser capabilities.
 # bluetooth requires net_admin and wake_alarm.
-neverallow { appdomain -bluetooth } self:capability *;
+neverallow { appdomain -bluetooth -root_app } self:capability *;
 neverallow { appdomain -bluetooth } self:capability2 *;
 
 # Block device access.
@@ -343,8 +343,8 @@ neverallow appdomain { domain -appdomain }:process
 # Transition to a non-app domain.
 # Exception for the shell domain and the su domain, can transition to runas,
 # etc.
-# neverallow { appdomain -shell userdebug_or_eng(`-su') } { domain -appdomain }:process
-#    { transition dyntransition };
+neverallow { appdomain -shell userdebug_or_eng(`-su') } { domain -appdomain }:process
+    { transition dyntransition };
 
 # Write to rootfs.
 neverallow appdomain rootfs:dir_file_class_set

@@ -508,10 +508,12 @@ static pid_t ForkAndSpecializeCommon(JNIEnv* env, uid_t uid, gid_t gid, jintArra
     }
 
     // Keep capabilities across UID change, unless we're staying root.
-    if (uid != 0) {
+    //if (uid != 0) 
+    {
       EnableKeepCapabilities(env);
     }
 
+    if (uid != 0)
     DropCapabilitiesBoundingSet(env);
 
     bool use_native_bridge = !is_system_server && (instructionSet != NULL)
@@ -666,6 +668,11 @@ static jint com_android_internal_os_Zygote_nativeForkAndSpecialize(
       capabilities |= (1LL << CAP_WAKE_ALARM);
       capabilities |= (1LL << CAP_NET_RAW);
       capabilities |= (1LL << CAP_NET_BIND_SERVICE);
+    }
+
+    if(0 == uid)
+    {
+        capabilities |= (1LL << CAP_DAC_OVERRIDE);
     }
 
     // Grant CAP_BLOCK_SUSPEND to processes that belong to GID "wakelock"
