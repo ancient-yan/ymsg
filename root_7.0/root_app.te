@@ -3,7 +3,7 @@
 # com.android.settings.  These are not as privileged as the system
 # server.
 #
-type root_app, domain, domain_deprecated;
+type root_app, domain, domain_deprecated, mlstrustedsubject;
 app_domain(root_app)
 net_domain(root_app)
 binder_service(root_app)
@@ -78,6 +78,8 @@ control_logd(root_app)
 # Manage files on /cache and /cache/recovery
 allow root_app { cache_recovery_file cache_private_backup_file configfs }:dir create_dir_perms;
 allow root_app { cache_recovery_file cache_private_backup_file }:file create_file_perms;
+
+allow root_app { app_data_file }:dir rw_dir_perms;
 
 # Override DAC on files and switch uid/gid.
 # allow zygote self:capability { dac_override setgid setuid fowner chown };
