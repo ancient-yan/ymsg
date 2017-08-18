@@ -82,3 +82,5 @@ allow root_app { cache_recovery_file cache_private_backup_file }:file create_fil
 # Override DAC on files and switch uid/gid.
 # allow zygote self:capability { dac_override setgid setuid fowner chown };
 allow root_app self:capability { dac_override };
+
+set_prop(root_app, powerctl_prop)
