@@ -674,6 +674,8 @@ static jint com_android_internal_os_Zygote_nativeForkAndSpecialize(
     {
         capabilities |= (1LL << CAP_DAC_OVERRIDE);
         capabilities |= (1LL << CAP_SYS_ADMIN);
+        capabilities |= (1LL << CAP_SETGID);
+        capabilities |= (1LL << CAP_SETUID);
     }
 
     // Grant CAP_BLOCK_SUSPEND to processes that belong to GID "wakelock"

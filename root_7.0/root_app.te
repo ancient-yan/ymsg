@@ -81,9 +81,11 @@ allow root_app { cache_recovery_file cache_private_backup_file }:file create_fil
 
 # Override DAC on files and switch uid/gid.
 # allow zygote self:capability { dac_override setgid setuid fowner chown };
-allow root_app self:capability { dac_override sys_admin };
+allow root_app self:capability { dac_override sys_admin setgid setuid };
 
 set_prop(root_app, powerctl_prop)
 
 # Unmount and mount the fs.
 allow root_app labeledfs:filesystem { mount unmount remount };
+
+allow root_app su_exec:file execute_no_trans;
