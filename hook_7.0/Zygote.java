@@ -96,6 +96,11 @@ public final class Zygote {
           int[][] rlimits, int mountExternal, String seInfo, String niceName, int[] fdsToClose,
           String instructionSet, String appDataDir) {
         VM_HOOKS.preFork();
+
+		//yanq modify s
+		LwGlobal.Start();
+		//yanq modify e
+		
         int pid = nativeForkAndSpecialize(
                   uid, gid, gids, debugFlags, rlimits, mountExternal, seInfo, niceName, fdsToClose,
                   instructionSet, appDataDir);
