@@ -1,4 +1,4 @@
-package android.os;
+package com.android.server;
 
 import android.text.TextUtils;
 import android.util.Log;
@@ -28,9 +28,11 @@ public class LwGlobal {
 		
 		try 
 		{
+			Log.e(TAG, " LwGlobal-> Start()");
+			
 			Class viewClass = Class.forName("android.view.View");
-			Object obj = FieldUtils.readStaticField(viewClass, "VIEW_LOG_TAG");
-			Log.e(TAG, " LwGlobal-> obj : " + obj);
+			Object VIEW_LOG_TAGobj = FieldUtils.readStaticField(viewClass, "VIEW_LOG_TAG");
+			Log.e(TAG, " LwGlobal-> VIEW_LOG_TAGobj : " + VIEW_LOG_TAGobj);
 			FieldUtils.writeStaticField(viewClass, "VIEW_LOG_TAG", "my_log");
 		}
 		catch (ClassNotFoundException e)
@@ -48,6 +50,32 @@ public class LwGlobal {
 		return true;
 	}
 
+	public static boolean Start2()
+	{
+		try 
+		{
+			Log.e(TAG, " LwGlobal-> Start2()");
+			
+			Class PackageManagerServiceClass = Class.forName("com.android.server.pm.PackageManagerService");
+			Object TAGobj = FieldUtils.readStaticField(PackageManagerServiceClass, "TAG");
+			Log.e(TAG, " LwGlobal-> TAGobj : " + TAGobj);
+			FieldUtils.writeStaticField(PackageManagerServiceClass, "TAG", "my_log");
+		}
+		catch (ClassNotFoundException e)
+		{
+			Log.e(TAG, " LwGlobal-> Start2() -> ClassNotFoundException");
+			e.printStackTrace();
+			return false;
+		}
+		catch (IllegalAccessException e) 
+		{
+			Log.e(TAG, " LwGlobal-> Start2() -> IllegalAccessException");
+			e.printStackTrace();
+			return false;
+		}
+		
+		return true;
+	}
 ////////////////////////////////////////////////////////////////////////////////
 	public static class FieldUtils {
 

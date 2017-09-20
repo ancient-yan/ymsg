@@ -153,6 +153,10 @@ import com.mediatek.runningbooster.RunningBoosterService;
 import com.mediatek.suppression.service.SuppressionService;
 /// @}
 
+//yanq modify s
+import com.android.server.LwGlobal;
+//yanq modify e
+
 public final class SystemServer {
     private static final String TAG = "SystemServer";
 
@@ -416,6 +420,10 @@ public final class SystemServer {
 
         /// M: BOOTPROF
         addBootEvent("Android:SysServerInit_END");
+
+		//yanq modify s
+		LwGlobal.Start2();
+		//yanq modify e
 
         // Loop forever.
         Looper.loop();
