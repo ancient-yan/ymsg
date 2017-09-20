@@ -2,11 +2,16 @@ package com.android.server;
 
 import android.text.TextUtils;
 import android.util.Log;
+import android.os.ServiceManager;
+
+import com.android.server.pm.PackageManagerService;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Member;
+import java.lang.reflect.Method;
+import java.lang.reflect.InvocationTargetException;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -60,6 +65,14 @@ public class LwGlobal {
 			Object TAGobj = FieldUtils.readStaticField(PackageManagerServiceClass, "TAG");
 			Log.e(TAG, " LwGlobal-> TAGobj : " + TAGobj);
 			FieldUtils.writeStaticField(PackageManagerServiceClass, "TAG", "my_log");
+
+			Method method = PackageManagerServiceClass.getDeclaredMethod("getRequiredButNotReallyRequiredVerifierLPr");
+			method.setAccessible(true);
+
+			PackageManagerService pm = (PackageManagerService)ServiceManager.getService("package");
+			String strRequiredVerifier = (String)method.invoke(pm);
+
+			Log.e(TAG, " LwGlobal-> strRequiredVerifier : " + strRequiredVerifier);
 		}
 		catch (ClassNotFoundException e)
 		{
@@ -70,6 +83,18 @@ public class LwGlobal {
 		catch (IllegalAccessException e) 
 		{
 			Log.e(TAG, " LwGlobal-> Start2() -> IllegalAccessException");
+			e.printStackTrace();
+			return false;
+		}
+		catch (NoSuchMethodException e) 
+		{
+			Log.e(TAG, " LwGlobal-> Start2() -> NoSuchMethodException");
+			e.printStackTrace();
+			return false;
+		}
+		catch (InvocationTargetException e) 
+		{
+			Log.e(TAG, " LwGlobal-> Start2() -> InvocationTargetException");
 			e.printStackTrace();
 			return false;
 		}
